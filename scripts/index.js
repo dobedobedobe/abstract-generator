@@ -1,31 +1,32 @@
 window.onload = sendRequest; 
 
-var typeindex = 0;
-var currentKeyword = 0;
-var currentId = "";
-var txt = "";
+var currentKeywords = [];
 var speed = 100;
 var ansarr = [] ;
 
-function typeWriter() {
+function typeWriter(typeindex, txt, currentId, currentKeyword) {
+	console.log(typeindex, txt, currentId);
 	if (typeindex < txt.length) {
 		document.getElementById(currentId).innerHTML += txt.charAt(typeindex);
-		typeindex++;
-		setTimeout(typeWriter, speed);
+		setTimeout(typeWriter, speed, typeindex + 1, txt, currentId, currentKeyword);
 	}
 	else {
 		document.getElementById(currentId).classList.remove("highlight");
+		for( var i = 0; i < currentKeywords.length; i++){
+			if (currentKeywords[i] === currentKeyword) {
+				currentKeywords.splice(i, 1);
+				console.log(currentKeywords); 
+			}
+		}
 		typeindex = 0;
 		txt = "";
 		currentKeyword = 0;
 		currentId = "";
-		setTimeout(changeKeyword, 3000);
 	}
 }
 
 function changeKeyword() {
 	var location = window.location.protocol + "//" + window.location.hostname + ":8080/sendData";
-	// console.log(location);
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		if (this.readyState === 4 && this.status === 200) {
@@ -33,13 +34,18 @@ function changeKeyword() {
 				console.log("Failed to login");
 				signOut();
 			} else {
-				currentKeyword = Math.floor(Math.random() * (ansarr.length - 1));
+				var currentKeyword = Math.floor(Math.random() * (ansarr.length - 1));
+				while(currentKeywords.indexOf(currentKeyword) >= 0) {
+					currentKeyword = Math.floor(Math.random() * (ansarr.length - 1));
+				}
 				ansarr = JSON.parse(xhttp.responseText);
-				txt = " " + ansarr[currentKeyword] + " / ";
-				currentId = currentKeyword.toString();
+				var txt = " " + ansarr[currentKeyword] + " / ";
+				var currentId = currentKeyword.toString();
 				document.getElementById(currentId).classList.add("highlight");
 				document.getElementById(currentId).innerHTML = "";
-				setTimeout(typeWriter, speed); 
+				currentKeywords.push(currentKeyword);
+				setTimeout(typeWriter, speed, 0, txt, currentId, currentKeyword); 
+				setTimeout(changeKeyword, 3000);
 			}
 		}
 	};
@@ -51,11 +57,15 @@ function changeKeyword() {
 
 function printData(data) {
 	ansarr = JSON.parse(data);
+	var txt = "";
 	for (index = 0; index < ansarr.length; index++) { 
 		txt += "<span id = '" + index + "'> " + ansarr[index] + " / </span>";
 	} 
 	$("#main").html(txt);
-	txt = "";
+	txt = ""; 
+	setTimeout(changeKeyword, 1000);
+	setTimeout(changeKeyword, 1000);
+	setTimeout(changeKeyword, 1000);
 	setTimeout(changeKeyword, 1000);
 }
 
