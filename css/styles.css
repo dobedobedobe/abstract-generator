@@ -1,22 +1,14 @@
 #main {
-	font-family: 'Fira Mono', monospace;
+	font-family: "Courrier", monospace;
 	font-weight: medium;
-	text-align: justify;
+	/*text-align: justify;*/
 	padding-top: 40px;
-	font-size: 18px;
+	font-size: 25px;
 	line-height: 30px;
-	overflow: hidden;
-	animation: 
-    typing 3.5s steps(30, end),
-    blink-caret .5s step-end infinite;
 }
 
-@keyframes typing {
-	from { width: 0 }
-	to { width: 100% }
+.highlight {
+	background-color: black;
+	color: white;
 }
 
-@keyframes blink-caret {
-  from, to { border-color: transparent }
-  50% { border-color: orange }
-}

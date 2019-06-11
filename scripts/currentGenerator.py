@@ -1,5 +1,5 @@
 from random import randint
-import csv
+import csv, json
 
 
 if __name__ == '__main__':
@@ -13,14 +13,15 @@ if __name__ == '__main__':
 	for i in L: 
 		D[len(i)] = 1
 
-	abstract = "" 
+	abstract = [] 
 	while(counter < 71):
 		while(True):
 			index = randint(0, length - 1)
 			if (L[index][counter] != "") :
 				# print(L[index][counter]) + " "
-				abstract += L[index][counter] + "/ "
+				abstract.append(L[index][counter])
 				counter += 1
 				break
 
-	print(abstract)
+	jsonarr = json.dumps(abstract)
+	print(jsonarr)
