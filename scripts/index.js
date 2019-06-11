@@ -5,7 +5,7 @@ var speed = 100;
 var ansarr = [] ;
 
 function typeWriter(typeindex, txt, currentId, currentKeyword) {
-	console.log(typeindex, txt, currentId);
+	// console.log(typeindex, txt, currentId);
 	if (typeindex < txt.length) {
 		document.getElementById(currentId).innerHTML += txt.charAt(typeindex);
 		setTimeout(typeWriter, speed, typeindex + 1, txt, currentId, currentKeyword);
@@ -15,13 +15,8 @@ function typeWriter(typeindex, txt, currentId, currentKeyword) {
 		for( var i = 0; i < currentKeywords.length; i++){
 			if (currentKeywords[i] === currentKeyword) {
 				currentKeywords.splice(i, 1);
-				console.log(currentKeywords); 
 			}
 		}
-		typeindex = 0;
-		txt = "";
-		currentKeyword = 0;
-		currentId = "";
 	}
 }
 
